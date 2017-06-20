@@ -16,12 +16,15 @@ const AddTodo = (props) => {
   };
 
   return (
-    <input
-      type='text'
-      className='todo__entry'
-      placeholder='Add todo'
-      onKeyDown={onSubmit}
-    />
+    <div>
+      <input
+        type='text'
+        className='todo__entry'
+        placeholder='Add todo'
+        onKeyDown={onSubmit}
+      />
+      <button>Add</button>
+    </div>
   );
 }
 

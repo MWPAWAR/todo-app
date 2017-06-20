@@ -1,8 +1,9 @@
 html, body, input, button {
-  font-family: Sawasdee;
+  font-family: Georgia;
   font-size: 20px;
 }
 
+/* Follow BEM stylesheets*/
 .todo__list {
   margin: 0;
   padding: 0;
@@ -12,6 +13,11 @@ html, body, input, button {
 .todo__item {
   padding: .5em .25em;
   border-bottom: solid 1px #eee;
+}
+
+.todo__complete, .todo__delete {
+  margin-right: .25em;
+  float: right;
 }
 
 .todo__item:hover {
