@@ -1,25 +1,54 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import AddTodo from '../components/AddTodo';
+import EditTodo from '../components/EditTodo';
 import TodoList from '../components/TodoList';
-import { addTodo, toggleTodo, deleteTodo } from '../actions/index';
+import { 
+  addTodo,
+  deleteTodo,
+  editTodo,
+  toggleTodo,
+  updateTodo 
+} from '../actions/index';
 
 const mapStateToProps = state => {
+  const todos = state.getIn(['todos']);
+  const isEditing = state.getIn(['isEditing']);
+  const requestedTodoId = state.getIn(['requestedTodoId']);
+
   return {
-    todos: state
+    todos,
+    isEditing,
+    requestedTodoId
   };
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     addTodo: text => dispatch(addTodo(text)),
+    deleteTodo: id => dispatch(deleteTodo(id)),
+    editTodo: id => dispatch(editTodo(id)),
     toggleTodo: id => dispatch(toggleTodo(id)),
-    deleteTodo: id => dispatch(deleteTodo(id))
-  };
+    updateTodo: ((id, text) => dispatch(updateTodo(id, text)))
+  }
 }
 
 const App = (props) => {
-  const { todos, addTodo, toggleTodo, deleteTodo } = props;
+  const {
+    todos,
+    isEditing,
+    addTodo,
+    toggleTodo,
+    deleteTodo,
+    updateTodo,
+    editTodo,
+    requestedTodoId
+  } = props;
+
+  if (requestedTodoId) {
+    const todoList = todos.filter(t => t.get('id') === requestedTodoId);
+    return <EditTodo todo={todoList.get(0)} updateTodo={updateTodo} />;
+  }
 
   return (
     <div>
@@ -27,7 +56,8 @@ const App = (props) => {
       <TodoList 
         todos={todos} 
         toggleTodo={toggleTodo}
-        deleteTodo={deleteTodo} 
+        deleteTodo={deleteTodo}
+        editTodo={editTodo}
       />
     </div>
   );

@@ -1,29 +1,64 @@
 import { List, Map } from 'immutable';
 import { 
-  ADD_TODO, 
+  ADD_TODO,
+  DELETE_TODO,
+  EDIT_TODO,
   TOGGLE_TODO,
-  DELETE_TODO 
+  UPDATE_TODO
 } from '../action-types';
 
-const init = List([]);
+const init = new Map({ 
+  todos: new List([]), 
+  isEditing: false 
+});
 
-export default function (todos=init, action) {
+export default function (state=init, action) {
+  let todos = state.getIn(['todos']);
+  const isEditing = state.getIn(['isEditing']);
+
   switch(action.type) {
     case ADD_TODO:
-      return todos.push(Map(action.payload));
+      todos = todos.push(Map(action.payload));
+      return new Map({
+        todos,
+        isEditing
+      });
     case TOGGLE_TODO:
-      return todos.map(t => {
-        if (t.get('id') === action.payload) {
-          return t.update('isDone', isDone => !isDone);
-        }
+      todos = todos.map(t => {
+        return t.get('id') === action.payload 
+          ? t.update('isDone', isDone => !isDone)
+          : t;
+      });
 
-        return t;
+      return new Map({
+        todos,
+        isEditing
       });
     case DELETE_TODO:
-      return todos.filter(t => {
-        return t.get('id') !== action.payload;
+      todos = todos.filter(t => t.get('id') !== action.payload);
+
+      return new Map({
+        todos,
+        isEditing
+      });
+    case EDIT_TODO:
+      return new Map({
+        todos,
+        isEditing: true,
+        requestedTodoId: action.payload
+      });
+    case UPDATE_TODO:
+      todos = todos.map(t => {
+        return t.get('id') === action.payload.id
+          ? t.update('text', text => action.payload.text)
+          : t;
+      });
+
+      return new Map({
+        todos,
+        isEditing: false
       });
     default:
-      return todos;
+      return state;
   }
 }

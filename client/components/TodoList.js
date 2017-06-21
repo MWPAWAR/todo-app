@@ -2,9 +2,15 @@ import React from 'react';
 import Todo from '../components/Todo';
 
 const TodoList = (props) => {
-  const { todos, toggleTodo, deleteTodo } = props;
+  const { 
+    todos, 
+    toggleTodo, 
+    deleteTodo, 
+    editTodo 
+  } = props;
   const onComplete = id => event => toggleTodo(id);
   const onDelete = id => event => deleteTodo(id);
+  const onEdit = id => event => editTodo(id);
 
   return (
     <ul className='todo__list'>
@@ -16,7 +22,7 @@ const TodoList = (props) => {
             className="todo__complete" 
             onClick={onComplete(t.get('id'))}
           >
-            Complete
+            {t.get('isDone') ? 'Unmark' : 'Mark'}
           </button>
           <button 
             className="todo__delete" 
@@ -24,6 +30,13 @@ const TodoList = (props) => {
           >
             Delete
           </button>
+          <button 
+            className="todo__edit" 
+            onClick={onEdit(t.get('id'))}
+          >
+            Edit
+          </button>
+
         </li>
       ))}
     </ul>
