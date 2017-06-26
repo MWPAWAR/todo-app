@@ -4,7 +4,7 @@ This app basically provides Add, edit, delete operations on TODOs and contains a
 # Installation
   - You should have `node` installed.
   - You should have `yarn` installed
-  - Then use command following command from application directory.
+  - To install packages please run following command from application directory.
 
 ```sh
 $ yarn
