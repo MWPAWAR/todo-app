@@ -26,7 +26,7 @@ const EditTodo = (props) => {
         onKeyDown={onSubmit}
       />
       <span className='todo__informatory_text'>
-        Tip: The text should not be empty. After inserting any text please press enter to add Todo.
+        Tip: The text should not be empty. After inserting any text please press enter to update Todo.
       </span>
     </div>
   );
